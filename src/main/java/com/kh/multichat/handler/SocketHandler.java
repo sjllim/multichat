@@ -2,7 +2,9 @@ package com.kh.multichat.handler;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.kh.multichat.service.ChatService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
@@ -19,8 +21,14 @@ import java.util.Map;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
+    private ChatService chatService;
+
     // 웹소켓 세션을 담아둘 리스트
     List<Map<String, Object>> rls = new ArrayList<>();
+    @Autowired
+    public SocketHandler(ChatService chatService) {
+        this.chatService = chatService;
+    }
 
     // 메시지 발송
     @Override
@@ -49,6 +57,7 @@ public class SocketHandler extends TextWebSocketHandler {
                 WebSocketSession wss = (WebSocketSession) temp.get(k);
                 if (wss != null) {
                     wss.sendMessage(new TextMessage(obj.toString()));
+                    chatService.saveTest(obj.toString());
                 }
             }
         }

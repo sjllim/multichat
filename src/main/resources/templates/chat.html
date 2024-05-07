@@ -9,7 +9,7 @@
 </head>
 <body>
 <div id="container" class="container">
-    <h1>채팅</h1>
+    <h1 th:text="${roomName}">채팅</h1>
     <input type="hidden" id="sessionId" value="">
     <input type="hidden" id="roomNumber" th:value="${roomNumber}">
 
