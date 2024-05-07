@@ -19,8 +19,6 @@ import java.util.Map;
 @Component
 public class SocketHandler extends TextWebSocketHandler {
 
-    // 웹소켓 세션 관리
-    // Map<String, WebSocketSession> sessionMap = new HashMap<>();
     // 웹소켓 세션을 담아둘 리스트
     List<Map<String, Object>> rls = new ArrayList<>();
 
@@ -30,6 +28,7 @@ public class SocketHandler extends TextWebSocketHandler {
         String msg = message.getPayload();
         JsonObject obj = jsonToObjectParser(msg);
 
+        // 메시지 요청된 채팅방과 같은 방에 존재하는 세션을 검색
         String rN = obj.get("roomNumber").getAsString();
         Map<String, Object> temp = new HashMap<>();
         if (!rls.isEmpty()) {
@@ -78,6 +77,20 @@ public class SocketHandler extends TextWebSocketHandler {
                 }
             }
         }
+
+        /*
+        아래와 같은 구조로 데이터를 관리됨.
+          - 하나의 객체에 roomNumber(방번호)와 연결된 세션 객체들
+        [
+            {"roomNumber":1,
+             "session_id1": {"id":"id1","uri":"xxxx"},
+             "session_id2": {"id":"id2","uri":"xxxx"}
+            },
+            {"roomNumber":2,
+             "session_id3":{"id":"id3","uri":"yyyy"}
+            }
+         ]
+         */
 
         if (flag) {
             Map<String, Object> map = rls.get(idx);

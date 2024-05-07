@@ -19,16 +19,27 @@ public class MainController {
     List<ChatRoom> roomList = new ArrayList<>();
     static int roomNum = 0;
 
+    /**
+     * 채팅 페이지 응답
+     */
     @RequestMapping("/chat")
     public String chat() {
         return "chat";
     }
 
+    /**
+     * 채팅방 목록 페이지 응답 (메인 페이지)
+     */
     @RequestMapping("/")
     public String room() {
         return "room";
     }
 
+    /**
+     * 채팅방 목록 데이터 조회
+     * @param roomName 채팅방이름
+     * @return roomList 채팅방목록
+     */
     @ResponseBody
     @RequestMapping(value="/room/create", produces = "application/json;charset=UTF-8")
     public String createRoom(@RequestParam(value="roomName", defaultValue = "")String roomName) {
@@ -43,6 +54,11 @@ public class MainController {
         return new Gson().toJson(roomList);
     }
 
+    /**
+     * 해당 채팅방 접속 요청
+     * @param roomName 채팅방 이름
+     * @param roomNumber 채팅방 번호
+     */
     @RequestMapping("/move/chatting")
     public String chatting(String roomName, int roomNumber, Model model) {
 

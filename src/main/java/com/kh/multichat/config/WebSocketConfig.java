@@ -14,6 +14,9 @@ public class WebSocketConfig implements WebSocketConfigurer {
     @Autowired
     private SocketHandler socketHandler;
 
+    /**
+     * 채팅 메시지 요청을 받아 처리하도록 설정
+     */
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         registry.addHandler(socketHandler, "/chatting/{roomNumber}");
